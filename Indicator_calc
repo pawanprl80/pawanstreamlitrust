@@ -1,0 +1,14 @@
+# indicator_calc.py
+def calculate_indicators(prices):
+    # Placeholder calculation, replace with your Supertrend/RSI/MACD etc
+    return {
+        'Supertrend': True,
+        'MACD': True,
+        'MACD_Line': 1.0,
+        'RSI': 75,
+        'UpperBand': prices[-1]*1.02,
+        'Supertrend_MidCross': True,
+        'Squeeze_Slope': 0.5,
+        'Spot_ATM': True,
+        'LTP': prices[-1]
+    }
