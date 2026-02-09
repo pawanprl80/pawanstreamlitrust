@@ -1,0 +1,24 @@
+# 1️⃣ Build Rust backend
+FROM rust:1.71 as builder
+WORKDIR /app
+COPY backend_rust /app/backend_rust
+RUN cd /app/backend_rust && cargo build --release
+
+# 2️⃣ Python + Streamlit frontend
+FROM python:3.11-slim
+WORKDIR /app
+
+# Copy Rust binary
+COPY --from=builder /app/backend_rust/target/release/pawan_backend /app/backend_rust/pawan_backend
+
+# Copy Streamlit dashboard
+COPY . /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose both ports: 8501 for Streamlit, 8080 for Rust backend
+EXPOSE 8501 8080
+
+# Start Rust backend in background, then Streamlit
+CMD bash -c "/app/backend_rust/pawan_backend & streamlit run dashboard.py --server.port=8501 --server.address=0.0.0.0"
